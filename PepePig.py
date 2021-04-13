@@ -329,28 +329,26 @@ class UtilityCommands(commands.Cog):
     )
     async def emojify(self, ctx):
         text = ctx.message.content.split()[2:]
-        print("text before =", text)
 
         trans = Translator()
         translated_text = trans.translate(" ".join(text), dest="en").text.split()
-        print("Translated:", translated_text)
-        # text = [i.text for i in trans.translate(text, dest='en')]
-        print(f"text={text}")
-
+        # print(f"text={text}")
+        # print("Translated:", translated_text)
+        
         #? personal emoji match
-        def case1(): return word + " " + personal_mapping[word.lower()] + " "
+        def case1(w, t): return w + " " + personal_mapping[w.lower()] + " "
 
-        #? translated personal emoji match    
-        def case2(): return word + " " + personal_mapping[translated_word.lower()] + " "
+        #? translated personal emoji match
+        def case2(w, t): return w + " " + personal_mapping[t.lower()] + " "
         
         #? emoji match
-        def case3(): return word + " " + emoji_mapping[word.lower()] + " "
+        def case3(w, t): return w + " " + emoji_mapping[w.lower()] + " "
         
         #? translated emoji match
-        def case4(): return word + " " + emoji_mapping[translated_word.lower()] + " "
+        def case4(w, t): return w + " " + emoji_mapping[t.lower()] + " "
         
         #? no match at all. Just add a random emoji with the word
-        def case5(): return word + " " + random.choice(personal_mapping["random_emojis_list"]) + " "
+        def case5(w, t): return w + " " + random.choice(personal_mapping["random_emojis_list"]) + " "
         
         if text:
             # emoji_url = request.urlopen("http://erikyangs.com/emojipastagenerator/emojiMapping.json")
@@ -373,7 +371,7 @@ class UtilityCommands(commands.Cog):
                     #? try all funcs in order, stop at first non-error-throwing function
                     for func in [case1, case2, case3, case4, case5]:
                         try:
-                            output += func() #; print(func.__name__)
+                            output += func(word, translated_word) #; print(func.__name__)
                             break
                         except:
                             pass
