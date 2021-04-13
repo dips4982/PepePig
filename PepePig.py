@@ -334,7 +334,7 @@ class UtilityCommands(commands.Cog):
         translated_text = trans.translate(" ".join(text), dest="en").text.split()
         # print(f"text={text}")
         # print("Translated:", translated_text)
-        
+
         #? personal emoji match
         def case1(w, t): return w + " " + personal_mapping[w.lower()] + " "
 
